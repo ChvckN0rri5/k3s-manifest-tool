@@ -7,8 +7,8 @@ echo "Starting postinst script" > "$LOG"
 
 # Source the manifest.env file to get K3S_MANIFEST_PATH
 if [ -f /etc/manifest.env ]; then
-    echo "Sourcing /etc/manifest.env" >> "$LOG"
-    source /etc/manifest.env || { echo "Error sourcing /etc/manifest.env" >> "$LOG"; exit 1; }
+    echo "Adding K3S_MANIFEST_PATH to environment" >> "$LOG"
+    source /etc/manifest.env || { echo "Failed to source /etc/manifest.env" >> "$LOG"; exit 1; }
 else
     echo "Warning: /etc/manifest.env not found, skipping autocompletion cache refresh" >> "$LOG"
     exit 0
@@ -17,9 +17,9 @@ fi
 # Refresh the autocompletion cache
 if [ -n "$K3S_MANIFEST_PATH" ] && [ -d "$K3S_MANIFEST_PATH" ]; then
     echo "Refreshing cache for $K3S_MANIFEST_PATH" >> "$LOG"
-    ls -1 "$K3S_MANIFEST_PATH" > /tmp/manifest_files_cache 2>> "$LOG" || { echo "Error listing $K3S_MANIFEST_PATH" >> "$LOG"; exit 1; }
-    chmod 644 /tmp/manifest_files_cache 2>> "$LOG" || { echo "Error setting permissions on cache" >> "$LOG"; exit 1; }
-    chown root:root /tmp/manifest_files_cache 2>> "$LOG" || { echo "Error setting ownership on cache" >> "$LOG"; exit 1; }
+    ls -1 "$K3S_MANIFEST_PATH" > /tmp/manifest_files_cache 2>> "$LOG" || { echo "Failed to list $K3S_MANIFEST_PATH" >> "$LOG"; exit 1; }
+    chmod 644 /tmp/manifest_files_cache 2>> "$LOG" || { echo "Failed to set permissions on cache" >> "$LOG"; exit 1; }
+    chown root:root /tmp/manifest_files_cache 2>> "$LOG" || { echo "Failed to set ownership on cache" >> "$LOG"; exit 1; }
 else
     echo "K3S_MANIFEST_PATH not set or directory does not exist" >> "$LOG"
 fi
@@ -27,13 +27,9 @@ fi
 # Update man page database
 if command -v mandb >/dev/null; then
     echo "Updating man page database" >> "$LOG"
-    mandb >/dev/null 2>> "$LOG" || { echo "Error running mandb" >> "$LOG"; exit 1; }
-fi
-
-# Source bash completion if available
-if [ -f /etc/bash_completion ]; then
-    echo "Sourcing /etc/bash_completion" >> "$LOG"
-    source /etc/bash_completion 2>> "$LOG" || { echo "Error sourcing /etc/bash_completion" >> "$LOG"; exit 1; }
+    mandb >/dev/null 2>> "$LOG" || echo "Warning: mandb failed to update man page database, check logs" >> "$LOG"
+else
+    echo "mandb not found, skipping man database update" >> "$LOG"
 fi
 
 echo "Completed postinst script" >> "$LOG"

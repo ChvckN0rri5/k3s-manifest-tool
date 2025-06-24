@@ -1,5 +1,5 @@
 Package: k3s-manifest-tool
-Version: 1.2-3
+Version: 1.2-4
 Architecture: all
 Maintainer: ChvckN0rri5 <globalfrens@icloud.com>
 Depends: bash, dialog, bash-completion
