@@ -1,0 +1,129 @@
+#!/bin/bash
+
+# Check for dialog and prompt to install if missing
+if ! command -v dialog > /dev/null; then
+    echo "dialog is not installed. Do you want to install it? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        sudo apt-get install -y dialog
+        if ! command -v dialog > /dev/null; then
+            echo "Failed to install dialog"
+            exit 1
+        fi
+    else
+        echo "dialog is required for this installer"
+        exit 1
+    fi
+fi
+
+# Function to reset terminal
+reset_terminal() {
+    clear
+    tput reset
+}
+
+# Check for required files
+required_files=("manifest.sh" "manifest_completion.sh" "manifest.1" "manifest.env")
+missing_files=()
+for file in "${required_files[@]}"; do
+    if [ ! -f "$file" ]; then
+        missing_files+=("$file")
+    fi
+done
+
+if [ ${#missing_files[@]} -gt 0 ]; then
+    dialog --msgbox "Error: The following files are missing: ${missing_files[*]}. Please ensure all required files are in the current directory." 10 60
+    reset_terminal
+    exit 1
+fi
+
+# Welcome message
+dialog --msgbox "Welcome to the manifest script installer!\n\nThis script will install the manifest tool, its configuration, man page, and optionally the autocompletion component." 10 60
+reset_terminal
+
+# Confirm installation
+dialog --yesno "Do you want to install the manifest script and its components?" 8 60
+if [ $? -ne 0 ]; then
+    dialog --msgbox "Installation cancelled." 8 40
+    reset_terminal
+    exit 0
+fi
+
+# Install manifest script
+dialog --infobox "Installing manifest script to /usr/local/bin/manifest..." 5 60
+sudo cp manifest.sh /usr/local/bin/manifest
+sudo chmod +x /usr/local/bin/manifest
+if [ $? -eq 0 ]; then
+    dialog --msgbox "Manifest script installed successfully." 8 40
+else
+    dialog --msgbox "Error installing manifest script." 8 40
+    reset_terminal
+    exit 1
+fi
+reset_terminal
+
+# Install .env file
+dialog --infobox "Installing configuration file to /etc/manifest.env..." 5 60
+sudo cp manifest.env /etc/manifest.env
+sudo chmod 600 /etc/manifest.env
+sudo chown root:root /etc/manifest.env
+if [ $? -eq 0 ]; then
+    dialog --msgbox "Configuration file installed successfully." 8 40
+else
+    dialog --msgbox "Error installing configuration file." 8 40
+    reset_terminal
+    exit 1
+fi
+reset_terminal
+
+# Install man page
+dialog --infobox "Installing man page to /usr/local/man/man1/manifest.1..." 5 60
+sudo mkdir -p /usr/local/man/man1
+sudo cp manifest.1 /usr/local/man/man1/manifest.1
+sudo chmod 644 /usr/local/man/man1/manifest.1
+if [ $? -eq 0 ]; then
+    dialog --msgbox "Man page installed successfully." 8 40
+else
+    dialog --msgbox "Error installing man page." 8 40
+    reset_terminal
+    exit 1
+fi
+reset_terminal
+
+# Prompt for autocompletion installation
+dialog --yesno "Do you want to install the autocompletion component?" 8 60
+if [ $? -eq 0 ]; then
+    dialog --infobox "Installing autocompletion script to /etc/bash_completion.d/manifest..." 5 60
+    sudo cp manifest_completion.sh /etc/bash_completion.d/manifest
+    sudo chmod +x /etc/bash_completion.d/manifest
+    if [ $? -eq 0 ]; then
+        dialog --msgbox "Autocompletion script installed successfully." 8 40
+    else
+        dialog --msgbox "Error installing autocompletion script." 8 40
+        reset_terminal
+        exit 1
+    fi
+else
+    dialog --msgbox "Autocompletion installation skipped." 8 40
+fi
+reset_terminal
+
+# Refresh Bash completion
+if [ -f /etc/bash_completion ]; then
+    dialog --infobox "Refreshing Bash completion..." 5 60
+    source /etc/bash_completion
+    if [ $? -eq 0 ]; then
+        dialog --msgbox "Bash completion refreshed successfully." 8 40
+    else
+        dialog --msgbox "Error refreshing Bash completion." 8 40
+        reset_terminal
+        exit 1
+    fi
+else
+    dialog --msgbox "Warning: /etc/bash_completion not found. Autocompletion may not work until a new shell session is started." 8 60
+fi
+reset_terminal
+
+# Final message
+dialog --msgbox "Installation completed successfully!\n\nYou can now use 'manifest' to manage K3s manifest files.\nRun 'man manifest' for usage details.\nTry 'manifest --refresh-cache' to initialize the autocompletion cache." 10 60
+reset_terminal
