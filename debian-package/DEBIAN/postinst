@@ -6,20 +6,20 @@ LOG=/tmp/k3s-manifest-tool-postinst.log
 echo "Starting postinst script" > "$LOG"
 
 # Source the manifest.env file to get K3S_MANIFEST_PATH
-if [ -f /etc/ manifest.env ]; then
-    echo "Sourcing /etc/ manifest.env" >> "$LOG"
-    source /etc/ manifest.env || { echo "Error sourcing /etc/ manifest.env" >> "$LOG"; exit 1; }
+if [ -f /etc/manifest.env ]; then
+    echo "Sourcing /etc/manifest.env" >> "$LOG"
+    source /etc/manifest.env || { echo "Error sourcing /etc/manifest.env" >> "$LOG"; exit 1; }
 else
-    echo "Warning: /etc/ manifest.env not found, skipping autocompletion cache refresh" >> "$LOG"
+    echo "Warning: /etc/manifest.env not found, skipping autocompletion cache refresh" >> "$LOG"
     exit 0
 fi
 
 # Refresh the autocompletion cache
 if [ -n "$K3S_MANIFEST_PATH" ] && [ -d "$K3S_MANIFEST_PATH" ]; then
     echo "Refreshing cache for $K3S_MANIFEST_PATH" >> "$LOG"
-    ls -1 "$K3S_MANIFEST_PATH" > /tmp/ manifest_files_cache 2>> "$LOG" || { echo "Error listing $K3S_MANIFEST_PATH" >> "$LOG"; exit 1; }
-    chmod 644 /tmp/ manifest_files_cache 2>> "$LOG" || { echo "Error setting permissions on cache" >> "$LOG"; exit 1; }
-    chown root:root /tmp/ manifest_files_cache 2>> "$LOG" || { echo "Error setting ownership on cache" >> "$LOG"; exit 1; }
+    ls -1 "$K3S_MANIFEST_PATH" > /tmp/manifest_files_cache 2>> "$LOG" || { echo "Error listing $K3S_MANIFEST_PATH" >> "$LOG"; exit 1; }
+    chmod 644 /tmp/manifest_files_cache 2>> "$LOG" || { echo "Error setting permissions on cache" >> "$LOG"; exit 1; }
+    chown root:root /tmp/manifest_files_cache 2>> "$LOG" || { echo "Error setting ownership on cache" >> "$LOG"; exit 1; }
 else
     echo "K3S_MANIFEST_PATH not set or directory does not exist" >> "$LOG"
 fi
