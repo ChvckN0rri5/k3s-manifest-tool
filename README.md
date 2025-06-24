@@ -4,7 +4,7 @@ A Bash script for managing K3s manifest files, allowing users to move files to t
 
 ## Features
 
-- Move files to the K3s manifest directory (default: `/var/lib/rancher/k3s/server/manifests/`) with their original names.
+- Move files to the K3s manifest directory (default: `/var/lib/rancher/k3s/server/manifests`) with their original names.
 - Edit files in the manifest directory using `nano` via a TUI menu or direct command.
 - Support for Bash autocompletion of manifest directory files when editing.
 - Secure configuration with a restricted `.env` file.
@@ -15,7 +15,7 @@ A Bash script for managing K3s manifest files, allowing users to move files to t
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/manifest-tool.git
+   git clone https://github.com/ChvckN0rri5/manifest-tool.git
    cd manifest-tool
    ```
 
@@ -70,7 +70,7 @@ We welcome contributions to improve the Manifest Tool! If you're new to contribu
 ### How to Contribute with a Pull Request
 
 1. **Fork the Repository**:
-   - Go to the [Manifest Tool repository](https://github.com/<your-username>/manifest-tool) on GitHub.
+   - Go to the [Manifest Tool repository](https://github.com/ChvckN0rri5/manifest-tool) on GitHub.
    - Click the "Fork" button in the top-right corner to create a copy of the repository under your GitHub account.
 
 2. **Clone Your Fork**:
@@ -180,4 +180,4 @@ MIT License (see [LICENSE](LICENSE) for details).
 
 ## Contact
 
-For questions or support, open an issue on the [GitHub repository](https://github.com/<your-username>/manifest-tool).
+For questions or support, open an issue on the [GitHub repository](https://github.com/ChvckN0rri5/manifest-tool).
