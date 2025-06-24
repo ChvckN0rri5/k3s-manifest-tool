@@ -33,5 +33,11 @@ else
 fi
 
 echo "Completed postinst script" >> "$LOG"
+#Restart the shell to apply changes
+if command -v systemctl >/dev/null; then
+    echo "Restarting shell to apply changes" >> "$LOG"
+    bash # This will restart the shell
+else
+    echo "Failed to restart shell, please restart manually with: bash" >> "$LOG"
 exit 0
 # End of postinst script
