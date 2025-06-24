@@ -1,0 +1,14 @@
+# Ignore editor backup files
+*~
+*.bak
+
+# Ignore temporary files
+*.tmp
+*.swp
+
+# Ignore system-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore cache files that might be created during testing
+/tmp/*
