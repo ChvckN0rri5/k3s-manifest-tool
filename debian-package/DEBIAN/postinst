@@ -1,29 +1,41 @@
 #!/bin/bash
 set -e
 
+# Log file for debugging
+LOG=/tmp/k3s-manifest-tool-postinst.log
+echo "Starting postinst script" > "$LOG"
+
 # Source the manifest.env file to get K3S_MANIFEST_PATH
-if [ -f /etc/manifest.env ]; then
-    source /etc/manifest.env
+if [ -f /etc/ manifest.env ]; then
+    echo "Sourcing /etc/ manifest.env" >> "$LOG"
+    source /etc/ manifest.env || { echo "Error sourcing /etc/ manifest.env" >> "$LOG"; exit 1; }
 else
-    echo "Warning: /etc/manifest.env not found, skipping autocompletion cache refresh" >&2
+    echo "Warning: /etc/ manifest.env not found, skipping autocompletion cache refresh" >> "$LOG"
     exit 0
 fi
 
 # Refresh the autocompletion cache
 if [ -n "$K3S_MANIFEST_PATH" ] && [ -d "$K3S_MANIFEST_PATH" ]; then
-    ls -1 "$K3S_MANIFEST_PATH" > /tmp/manifest_files_cache
-    chmod 644 /tmp/manifest_files_cache
-    chown root:root /tmp/manifest_files_cache
+    echo "Refreshing cache for $K3S_MANIFEST_PATH" >> "$LOG"
+    ls -1 "$K3S_MANIFEST_PATH" > /tmp/ manifest_files_cache 2>> "$LOG" || { echo "Error listing $K3S_MANIFEST_PATH" >> "$LOG"; exit 1; }
+    chmod 644 /tmp/ manifest_files_cache 2>> "$LOG" || { echo "Error setting permissions on cache" >> "$LOG"; exit 1; }
+    chown root:root /tmp/ manifest_files_cache 2>> "$LOG" || { echo "Error setting ownership on cache" >> "$LOG"; exit 1; }
+else
+    echo "K3S_MANIFEST_PATH not set or directory does not exist" >> "$LOG"
 fi
 
 # Update man page database
 if command -v mandb >/dev/null; then
-    mandb >/dev/null 2>&1
+    echo "Updating man page database" >> "$LOG"
+    mandb >/dev/null 2>> "$LOG" || { echo "Error running mandb" >> "$LOG"; exit 1; }
 fi
 
 # Source bash completion if available
 if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+    echo "Sourcing /etc/bash_completion" >> "$LOG"
+    source /etc/bash_completion 2>> "$LOG" || { echo "Error sourcing /etc/bash_completion" >> "$LOG"; exit 1; }
 fi
 
+echo "Completed postinst script" >> "$LOG"
 exit 0
+# End of postinst script
