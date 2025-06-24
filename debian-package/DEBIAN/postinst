@@ -39,4 +39,6 @@ if command -v systemctl >/dev/null; then
     bash # This will restart the shell
 else
     echo "Failed to restart shell, please restart manually with: bash" >> "$LOG"
+fi
+
 exit 0
