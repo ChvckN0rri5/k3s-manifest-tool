@@ -1,0 +1,56 @@
+NAME
+       manifest - manage K3s manifest files
+
+SYNOPSIS
+       manifest [edit [filename] | <filename> | --refresh-cache]
+
+DESCRIPTION
+       The manifest script manages files in the K3s manifest directory, specified by K3S_MANIFEST_PATH in /etc/manifest.env (typically /var/lib/rancher/k3s/server/manifests/). It can move a file to the manifest directory, retaining its original filename, or edit existing files in the directory using sudo nano. The script requires sudo privileges for operations in the manifest directory and maintains a cache of the directory's contents for autocompletion.
+
+       When invoked with a filename, the script moves the file to the manifest directory, keeping its original name. If a file with the same name already exists, the user is prompted to edit it or rename the source file.
+
+       When invoked with the "edit" subcommand, the script allows the user to select a file from the manifest directory to edit using nano. If a filename is provided after "edit", that specific file is edited.
+
+       The --refresh-cache option updates the cache of the manifest directory's contents, stored in /tmp/manifest_files_cache.
+
+OPTIONS
+       edit [filename]
+              Edit a file in the manifest directory. If no filename is provided, a dialog menu is presented to select a file.
+
+       <filename>
+              Move the specified file to the manifest directory, retaining its original filename.
+
+       --refresh-cache
+              Update the cache of the manifest directory's contents.
+
+EXAMPLES
+       manifest traefik-config.yaml
+              Move traefik-config.yaml to /var/lib/rancher/k3s/server/manifests/traefik-config.yaml.
+
+       manifest edit
+              Present a dialog menu to select a file from the manifest directory to edit.
+
+       manifest edit traefik-config.yaml
+              Edit traefik-config.yaml in the manifest directory.
+
+       manifest --refresh-cache
+              Update the cache of the manifest directory's contents.
+
+FILES
+       /etc/manifest.env
+              Configuration file specifying K3S_MANIFEST_PATH.
+
+       /tmp/manifest_files_cache
+              Cache file listing contents of the manifest directory for autocompletion.
+        
+       /etc/bash_completion.d/manifest
+              Autocompletion script
+
+       /usr/local/bin/manifest
+              Manifest Application Script
+
+AUTHOR
+       System Administrator
+
+SEE ALSO
+       dialog(1), nano(1), sudo(8)

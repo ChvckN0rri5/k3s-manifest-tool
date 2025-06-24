@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+# Source the manifest.env file to get K3S_MANIFEST_PATH
+if [ -f /etc/manifest.env ]; then
+    source /etc/manifest.env
+else
+    echo "Warning: /etc/manifest.env not found, skipping autocompletion cache refresh" >&2
+    exit 0
+fi
+
+# Refresh the autocompletion cache
+if [ -n "$K3S_MANIFEST_PATH" ] && [ -d "$K3S_MANIFEST_PATH" ]; then
+    ls -1 "$K3S_MANIFEST_PATH" > /tmp/manifest_files_cache
+    chmod 644 /tmp/manifest_files_cache
+    chown root:root /tmp/manifest_files_cache
+fi
+
+# Update man page database
+if command -v mandb >/dev/null; then
+    mandb >/dev/null 2>&1
+fi
+
+# Source bash completion if available
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
+exit 0
