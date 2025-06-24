@@ -40,4 +40,3 @@ if command -v systemctl >/dev/null; then
 else
     echo "Failed to restart shell, please restart manually with: bash" >> "$LOG"
 exit 0
-# End of postinst script
