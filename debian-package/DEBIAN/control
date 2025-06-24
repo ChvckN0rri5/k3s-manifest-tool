@@ -1,5 +1,5 @@
 Package: k3s-manifest-tool
-Version: 1.2-4
+Version: 1.2-5
 Architecture: all
 Maintainer: ChvckN0rri5 <globalfrens@icloud.com>
 Depends: bash, dialog, bash-completion
@@ -12,3 +12,5 @@ Description: CLI tool for managing K3s manifest files
   files to the K3s manifest directory (retaining original names),
   edit files with nano via a TUI, and refresh an autocompletion cache.
   Requires sudo for secure operations.
+Changes: 
+  - Added bash refresh for autocomplete
