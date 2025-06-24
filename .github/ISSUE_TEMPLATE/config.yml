@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/github-issue-config.json
+blank_issues_enabled: false
+contact_links:
+  - name: General Questions and Discussions
+    url: https://github.com/ChvckN0rri5/manifest-tool/discussions
+    about: Ask questions, share ideas, or discuss the Manifest Tool in the Discussions tab
