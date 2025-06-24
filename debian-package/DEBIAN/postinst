@@ -36,7 +36,12 @@ echo "Completed postinst script" >> "$LOG"
 #Restart the shell to apply changes
 if command -v systemctl >/dev/null; then
     echo "Restarting shell to apply changes" >> "$LOG"
-    bash # This will restart the shell
+    #restart the shell
+    systemctl restart shell || { echo "Failed to restart shell, please restart manually" >> "$LOG"; exit 1; }
+elif command -v service >/dev/null; then
+    echo "Restarting shell to apply changes" >> "$LOG"
+    #restart the shell
+    service shell restart || { echo "Failed to restart shell, please restart manually" >> "$LOG"; exit 1; }
 else
     echo "Failed to restart shell, please restart manually with: bash" >> "$LOG"
 fi
