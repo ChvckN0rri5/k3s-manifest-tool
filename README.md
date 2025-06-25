@@ -4,7 +4,7 @@ A CLI tool for managing Kubernetes manifests, allowing users to move files to th
 
 ## Features
 
-- Move files to the manifests directory (default: `/var/lib/rancher/k3s/server/ manifests/`) with their original names.
+- Move files to the manifests directory (default: `/var/lib/rancher/k3s/server/manifests/`) with their original names.
 - Edit files in the manifests directory using `nano` via a TUI menu or direct command.
 - Support for Bash autocompletion of manifests directory files when editing.
 - Secure configuration with a restricted `.env` file.
