@@ -75,12 +75,12 @@ if [ "$1" = "edit" ]; then
             echo "No file selected"
             exit 0
         fi
-        sudo nano "$K3S_MANIFEST_PATH/$selected_file"
+        sudo $TEXT_EDITOR  "$K3S_MANIFEST_PATH/$selected_file"
         refresh_cache
     else
         # Edit the specified file
         if [ -f "$K3S_MANIFEST_PATH/$2" ]; then
-            sudo nano "$K3S_MANIFEST_PATH/$2"
+            sudo $TEXT_EDITOR "$K3S_MANIFEST_PATH/$2"
             refresh_cache
         else
             echo "File $K3S_MANIFEST_PATH/$2 does not exist"
@@ -101,7 +101,7 @@ elif [ $# -eq 1 ]; then
             response=$?
             reset_terminal
             if [ $response -eq 0 ]; then
-                sudo nano "$target_file"
+                sudo $TEXT_EDITOR "$target_file"
                 refresh_cache
                 exit 0
             else
