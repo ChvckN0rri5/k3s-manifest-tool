@@ -1,5 +1,10 @@
 #!/bin/bash
 
+##########################
+# DO NOT USE SCRIPT YET! #
+##########################
+
+
 # Check for dialog and prompt to install if missing
 if ! command -v dialog > /dev/null; then
     echo "dialog is not installed. Do you want to install it? (y/n)"
