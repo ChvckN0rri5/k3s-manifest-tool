@@ -13,4 +13,4 @@ Description: CLI tool for managing K3s manifest files
   edit files with nano via a TUI, and refresh an autocompletion cache.
   Requires sudo for secure operations.
 Changes: 
-  - Corrected manifest.env to add TEXT_EDITOR
+  - Corrected manifest.env to add TEXT_EDITOR setting
