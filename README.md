@@ -24,23 +24,7 @@ A CLI tool for managing Kubernetes manifests, allowing users to move files to th
    sudo apt install k3s-manifest-tool
    ```
 
-### Option 2: Manual Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/chvckn0rri5/k3s-manifest-tool.git
-   cd k3s-manifest-tool
-   ```
-2. Run the install script:
-   ```bash
-   bash install.sh
-   ```
-   The script will:
-   - Prompt to install `dialog` if missing.
-   - Install the `manifest` script to `/usr/local/bin/ manifest`.
-   - Install the configuration file to `/etc/ manifest.env`.
-   - Install the man page to `/usr/local/man/man1/ manifest.1`.
-   - Optionally install the autocompletion script to `/etc/bash_completion.d/ manifest`.
-   - Refresh Bash completion for immediate use.
+
 
 ## Usage
 
