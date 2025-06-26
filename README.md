@@ -65,6 +65,7 @@ The tool is designed to be simple and intuitive.
 | `manifest edit`               | Opens a TUI menu to select and edit a file from the manifest directory.                                 |
 | `manifest edit <filename>`    | Edits a specific file directly. Autocompletion is available.                                            |
 | `manifest --refresh-cache`    | Manually refreshes the autocompletion cache. This is automatically done after most operations.          |
+| `manifest -c`, `--config`     | Opens the configuration file (`/etc/manifest.env`) for editing.                                         |
 | `man manifest`                | Shows the manual page for detailed documentation.                                                       |
 
 ### Examples

@@ -2,7 +2,7 @@ NAME
        manifest - manage K3s manifest files
 
 SYNOPSIS
-       manifest [edit [filename] | <filename> | --refresh-cache]
+       manifest [edit [filename] | <filename> | --refresh-cache | -c | --config]
 
 DESCRIPTION
        The manifest script manages files in the K3s manifest directory, specified by K3S_MANIFEST_PATH in /etc/manifest.env (typically /var/lib/rancher/k3s/server/manifests/). It can move a file to the manifest directory, retaining its original filename, or edit existing files in the directory using sudo nano. The script requires sudo privileges for operations in the manifest directory and maintains a cache of the directory's contents for autocompletion.
@@ -22,6 +22,9 @@ OPTIONS
 
        --refresh-cache
               Update the cache of the manifest directory's contents.
+
+       -c, --config
+              Edit the configuration file /etc/manifest.env.
 
 EXAMPLES
        manifest traefik-config.yaml

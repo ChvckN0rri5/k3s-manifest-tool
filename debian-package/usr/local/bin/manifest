@@ -56,6 +56,12 @@ if [ "$1" = "--refresh-cache" ]; then
     exit 0
 fi
 
+# Handle -c or --config option
+if [ "$1" = "-c" ] || [ "$1" = "--config" ]; then
+    sudo $TEXT_EDITOR /etc/manifest.env
+    exit 0
+fi
+
 if [ "$1" = "edit" ]; then
     if [ -z "$2" ]; then
         # List files and let user choose one to edit
@@ -135,6 +141,6 @@ elif [ $# -eq 1 ]; then
         fi
     done
 else
-    echo "Usage: manifest [edit [filename] | <filename> | --refresh-cache]"
+    echo "Usage: manifest [edit [filename] | <filename> | --refresh-cache | -c | --config]"
     exit 1
 fi
