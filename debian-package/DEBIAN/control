@@ -13,4 +13,4 @@ Description: CLI tool for managing K3s manifest files
   edit files with nano via a TUI, and refresh an autocompletion cache.
   Requires sudo for secure operations.
 Changes: 
-  - Test build with build script (Number 2)
+  - Test build with build script (Number 3)
