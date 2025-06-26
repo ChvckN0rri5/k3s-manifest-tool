@@ -79,7 +79,6 @@ The tool is designed to be simple and intuitive.
     ```bash
     manifest edit
     ```
-    ![TUI Screenshot](https://user-images.githubusercontent.com/13856139/218352943-a88a95d4-4a9c-4483-8a3a-e0868e5f1b29.png)
 
 
 -   **Edit a specific file with autocompletion:**
