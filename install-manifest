@@ -1,10 +1,5 @@
 #!/bin/bash
 
-##########################
-# DO NOT USE SCRIPT YET! #
-##########################
-
-
 # Check for dialog and prompt to install if missing
 if ! command -v dialog > /dev/null; then
     echo "dialog is not installed. Do you want to install it? (y/n)"
@@ -27,8 +22,47 @@ reset_terminal() {
     tput reset
 }
 
+# Function to uninstall the manifest tool
+uninstall_manifest() {
+    dialog --yesno "Are you sure you want to uninstall the manifest tool and its components?" 8 60
+    if [ $? -ne 0 ]; then
+        dialog --msgbox "Uninstallation cancelled." 8 40
+        reset_terminal
+        exit 0
+    fi
+
+    dialog --infobox "Uninstalling manifest script from /usr/local/bin/manifest..." 5 60
+    sudo rm -f /usr/local/bin/manifest
+    
+    dialog --infobox "Uninstalling configuration file from /etc/manifest.env..." 5 60
+    sudo rm -f /etc/manifest.env
+    
+    dialog --infobox "Uninstalling man page from /usr/local/man/man1/manifest.1..." 5 60
+    sudo rm -f /usr/local/man/man1/manifest.1
+    
+    dialog --infobox "Uninstalling autocompletion script from /etc/bash_completion.d/manifest..." 5 60
+    sudo rm -f /etc/bash_completion.d/manifest
+    
+    dialog --infobox "Removing autocompletion cache..." 5 60
+    sudo rm -f /tmp/manifest_files_cache
+
+    dialog --msgbox "Uninstallation completed successfully." 8 40
+    reset_terminal
+    exit 0
+}
+
+# Check for --uninstall-manifest switch
+if [ "$1" = "--uninstall-manifest" ]; then
+    uninstall_manifest
+fi
+
 # Check for required files
-required_files=("manifest.sh" "manifest_completion.sh" "manifest.1" "manifest.env")
+required_files=(
+    "debian-package/usr/local/bin/manifest"
+    "debian-package/etc/bash_completion.d/manifest"
+    "debian-package/usr/local/man/man1/manifest.1"
+    "debian-package/etc/manifest.env"
+)
 missing_files=()
 for file in "${required_files[@]}"; do
     if [ ! -f "$file" ]; then
@@ -43,7 +77,9 @@ if [ ${#missing_files[@]} -gt 0 ]; then
 fi
 
 # Welcome message
-dialog --msgbox "Welcome to the manifest script installer!\n\nThis script will install the manifest tool, its configuration, man page, and optionally the autocompletion component." 10 60
+dialog --msgbox "Welcome to the manifest script installer!
+
+This script will install the manifest tool, its configuration, man page, and optionally the autocompletion component." 10 60
 reset_terminal
 
 # Confirm installation
@@ -56,7 +92,7 @@ fi
 
 # Install manifest script
 dialog --infobox "Installing manifest script to /usr/local/bin/manifest..." 5 60
-sudo cp manifest.sh /usr/local/bin/manifest
+sudo cp debian-package/usr/local/bin/manifest /usr/local/bin/manifest
 sudo chmod +x /usr/local/bin/manifest
 if [ $? -eq 0 ]; then
     dialog --msgbox "Manifest script installed successfully." 8 40
@@ -69,7 +105,7 @@ reset_terminal
 
 # Install .env file
 dialog --infobox "Installing configuration file to /etc/manifest.env..." 5 60
-sudo cp manifest.env /etc/manifest.env
+sudo cp debian-package/etc/manifest.env /etc/manifest.env
 sudo chmod 600 /etc/manifest.env
 sudo chown root:root /etc/manifest.env
 if [ $? -eq 0 ]; then
@@ -84,7 +120,7 @@ reset_terminal
 # Install man page
 dialog --infobox "Installing man page to /usr/local/man/man1/manifest.1..." 5 60
 sudo mkdir -p /usr/local/man/man1
-sudo cp manifest.1 /usr/local/man/man1/manifest.1
+sudo cp debian-package/usr/local/man/man1/manifest.1 /usr/local/man/man1/manifest.1
 sudo chmod 644 /usr/local/man/man1/manifest.1
 if [ $? -eq 0 ]; then
     dialog --msgbox "Man page installed successfully." 8 40
@@ -99,7 +135,7 @@ reset_terminal
 dialog --yesno "Do you want to install the autocompletion component?" 8 60
 if [ $? -eq 0 ]; then
     dialog --infobox "Installing autocompletion script to /etc/bash_completion.d/manifest..." 5 60
-    sudo cp manifest_completion.sh /etc/bash_completion.d/manifest
+    sudo cp debian-package/etc/bash_completion.d/manifest /etc/bash_completion.d/manifest
     sudo chmod +x /etc/bash_completion.d/manifest
     if [ $? -eq 0 ]; then
         dialog --msgbox "Autocompletion script installed successfully." 8 40
@@ -130,5 +166,4 @@ fi
 reset_terminal
 
 # Final message
-dialog --msgbox "Installation completed successfully!\n\nYou can now use 'manifest' to manage K3s manifest files.\nRun 'man manifest' for usage details.\nTry 'manifest --refresh-cache' to initialize the autocompletion cache." 10 60
-reset_terminal
+dialog --msgbox "Installation completed successfully!
